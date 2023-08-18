@@ -38,9 +38,12 @@ class login(APIView):
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
+            token, created = Token.objects.get_or_create(user=user)
+            serializer = PersonSerializer(user)
+            return Response({'token': token.key, 'user': serializer.data})
             return Response({"response": "correct Password"})
         else:
-            return Response({"response": "No User exist"})
+           return Response("missing user", status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
