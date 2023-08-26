@@ -9,8 +9,9 @@ from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
-from .serializers import PersonSerializer
-
+from .serializers import PersonSerializer,PersonUpdateSerializer
+from rest_framework import viewsets
+from rest_framework import generics
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -44,6 +45,35 @@ class login(APIView):
             return Response({"response": "correct Password"})
         else:
            return Response("missing user", status=status.HTTP_404_NOT_FOUND)
+class UserViewSet(viewsets.ViewSet):
+    """
+    A simple ViewSet for listing or retrieving users.
+    """
+    def list(self, request):
+        queryset = User.objects.all()
+        serializer = PersonSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = User.objects.all()
+        user = User.objects.get(pk=pk)
+        serializer = PersonSerializer(user)
+        return Response(serializer.data)
+class PersonBiographyViewSet(viewsets.ModelViewSet):
+    serializer_class = PersonSerializer
+
+    def get_queryset(self):
+        return User.objects.filter(pk=self.request.data['id'])
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+class PersonDetailAPIView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = PersonSerializer
+
+    def get_object(self):
+        return self.request.user
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])

@@ -21,5 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', include('person.urls')),
     path('login/', include('person.urls')),
-    # path("send-mail/",include("emailsender.urls")),
+    path("detail/",include("person.urls")),
+    path("update-biography/",include("person.urls")),
+    path("user-detail/",include("person.urls")),
+
 ]

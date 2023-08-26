@@ -23,7 +23,3 @@ class Person(AbstractBaseUser):
     USERNAME_FIELD = 'username'
     
     objects = PersonManager()  # Use the custom manager
-    
-    # def save(self, *args, **kwargs):
-    #     self.password = make_password(self.password)
-    #     super().save(*args, **kwargs)
