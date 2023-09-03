@@ -46,9 +46,6 @@ class login(APIView):
         else:
            return Response("missing user", status=status.HTTP_404_NOT_FOUND)
 class UserViewSet(viewsets.ViewSet):
-    """
-    A simple ViewSet for listing or retrieving users.
-    """
     def list(self, request):
         queryset = User.objects.all()
         serializer = PersonSerializer(queryset, many=True)
@@ -61,6 +58,7 @@ class UserViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 class PersonBiographyViewSet(viewsets.ModelViewSet):
     serializer_class = PersonSerializer
+    queryset = User.objects.all()
 
     def get_queryset(self):
         return User.objects.filter(pk=self.request.data['id'])

@@ -14,6 +14,7 @@ class Person(AbstractBaseUser):
     password = models.CharField(max_length=128, default='default_password')
     biography = models.CharField(max_length=200, null=True)
     photo = models.CharField(max_length=200, null=True)
+    title = models.CharField(max_length=200)
     invitation_token = models.CharField(
         max_length=255, blank=True, null=True, unique=True
     )

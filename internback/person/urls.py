@@ -13,5 +13,4 @@ urlpatterns = [
     path('detail',UserViewSet.as_view({'get': 'retrieve'})),
     path('', include(router.urls)),
     path('user-detail/', PersonDetailAPIView.as_view(), name='user-detail'),
-
 ]
