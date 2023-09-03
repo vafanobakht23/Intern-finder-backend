@@ -15,6 +15,8 @@ class Person(AbstractBaseUser):
     biography = models.CharField(max_length=200, null=True)
     photo = models.CharField(max_length=200, null=True)
     title = models.CharField(max_length=200)
+    university = models.CharField(max_length=200)
+    address = models.CharField(max_length=200)
     invitation_token = models.CharField(
         max_length=255, blank=True, null=True, unique=True
     )
