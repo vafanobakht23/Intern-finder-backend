@@ -1,10 +1,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
-from .views import login,UserViewSet,PersonBiographyViewSet,PersonDetailAPIView
+from .views import login,UserViewSet,PersonViewSet,PersonDetailAPIView
 
 router = DefaultRouter()
-router.register(r'update-biography', PersonBiographyViewSet, basename='update-biography')
+router.register(r'update-biography', PersonViewSet, basename='update-biography')
 
 urlpatterns = [
     path('', views.signup , name="register"),

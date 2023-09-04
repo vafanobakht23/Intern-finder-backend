@@ -56,7 +56,7 @@ class UserViewSet(viewsets.ViewSet):
         user = User.objects.get(pk=pk)
         serializer = PersonSerializer(user)
         return Response(serializer.data)
-class PersonBiographyViewSet(viewsets.ModelViewSet):
+class PersonViewSet(viewsets.ModelViewSet):
     serializer_class = PersonSerializer
     queryset = User.objects.all()
 

@@ -10,4 +10,4 @@ class PersonSerializer(serializers.ModelSerializer):
 class PersonUpdateSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Person 
-        fields = ["biography"]
+        fields = "__all__"
