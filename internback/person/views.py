@@ -12,6 +12,7 @@ from rest_framework.authtoken.models import Token
 from .serializers import PersonSerializer,PersonUpdateSerializer
 from rest_framework import viewsets
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -46,6 +47,7 @@ class login(APIView):
         else:
            return Response("missing user", status=status.HTTP_404_NOT_FOUND)
 class UserViewSet(viewsets.ViewSet):
+    permission_classes =[IsAuthenticated]
     def list(self, request):
         queryset = User.objects.all()
         serializer = PersonSerializer(queryset, many=True)
@@ -59,6 +61,7 @@ class UserViewSet(viewsets.ViewSet):
 class PersonViewSet(viewsets.ModelViewSet):
     serializer_class = PersonSerializer
     queryset = User.objects.all()
+    permission_classes =[IsAuthenticated]
 
     def get_queryset(self):
         return User.objects.filter(pk=self.request.data['id'])
