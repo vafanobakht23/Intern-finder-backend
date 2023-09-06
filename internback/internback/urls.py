@@ -27,4 +27,5 @@ urlpatterns = [
     path("upload/", include("person.urls")),
     path("update-biography/", include("person.urls")),
     path("user-detail/", include("person.urls")),
+    path("experiences/", include("experience.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
