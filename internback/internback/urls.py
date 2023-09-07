@@ -28,4 +28,7 @@ urlpatterns = [
     path("update-biography/", include("person.urls")),
     path("user-detail/", include("person.urls")),
     path("experiences/", include("experience.urls")),
+    path("experience-list/", include("experience.urls")),
+    path("skill/", include("skill.urls")),
+    path("skill-list/", include("skill.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

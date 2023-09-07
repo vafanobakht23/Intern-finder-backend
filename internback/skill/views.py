@@ -1,16 +1,16 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import Experience
-from .serializers import ExperienceSerializer
+from .models import Skill
+from .serializers import SkillSerializer
 
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
 
-class ExperienceViewSet(viewsets.ModelViewSet):
-    queryset = Experience.objects.all()
-    serializer_class = ExperienceSerializer
+class SkillViewSet(viewsets.ModelViewSet):
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer
 
     def create(self, request, *args, **kwargs):
         # Extract the user_id from the request data (assuming it's sent from the front end)
@@ -38,8 +38,6 @@ class ExperienceViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop("partial", False)
         instance = self.get_object()
-
-        # Ensure that only the owner of the experience can update it
         if instance.user != request.user:
             return Response(
                 {"detail": "You do not have permission to perform this action."},
@@ -69,8 +67,6 @@ class ExperienceViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-
-        # Ensure that only the owner of the experience can delete it
         if instance.user != request.user:
             return Response(
                 {"detail": "You do not have permission to perform this action."},
@@ -81,14 +77,12 @@ class ExperienceViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class UserExperienceViewSet(viewsets.ModelViewSet):
-    serializer_class = ExperienceSerializer
+class UserSkillViewSet(viewsets.ModelViewSet):
+    serializer_class = SkillSerializer
 
     def get_queryset(self):
         # Retrieve the user ID from the URL parameters
         user_id = self.request.data["user_id"]
-
-        # Filter experiences based on the user ID
-        queryset = Experience.objects.filter(user_id=user_id)
+        queryset = Skill.objects.filter(user_id=user_id)
 
         return queryset

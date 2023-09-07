@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "emailsender",
     "rest_framework.authtoken",
     "experience",
+    "skill",
 ]
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
