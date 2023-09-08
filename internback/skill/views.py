@@ -56,9 +56,6 @@ class SkillViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Add the user to the request data
-        request.data["user"] = user.id
-
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         if serializer.is_valid():
             serializer.save()
@@ -67,12 +64,11 @@ class SkillViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        if instance.user != request.user:
-            return Response(
-                {"detail": "You do not have permission to perform this action."},
-                status=status.HTTP_403_FORBIDDEN,
-            )
-
+        # if instance.user != request.user:
+        #     return Response(
+        #         {"detail": "You do not have permission to perform this action."},
+        #         status=status.HTTP_403_FORBIDDEN,
+        #     )
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

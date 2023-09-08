@@ -13,4 +13,9 @@ urlpatterns = [
         UserSkillViewSet.as_view({"post": "list"}),
         name="skill-list",
     ),
+    path(
+        "skill/",
+        UserSkillViewSet.as_view({"delete": "delete"}),
+        name="skill-delete",
+    ),
 ]

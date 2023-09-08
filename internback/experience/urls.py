@@ -13,4 +13,14 @@ urlpatterns = [
         UserExperienceViewSet.as_view({"post": "list"}),
         name="experience-list",
     ),
+    path(
+        "experiences/",
+        ExperienceViewSet.as_view({"patch": "update"}),
+        name="experience-update",
+    ),
+    path(
+        "experiences/",
+        ExperienceViewSet.as_view({"delete": "delete"}),
+        name="experience-update",
+    ),
 ]

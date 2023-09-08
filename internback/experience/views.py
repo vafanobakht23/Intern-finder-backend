@@ -57,10 +57,6 @@ class ExperienceViewSet(viewsets.ModelViewSet):
                 {"detail": "User with this user_id does not exist."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
-        # Add the user to the request data
-        request.data["user"] = user.id
-
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         if serializer.is_valid():
             serializer.save()

@@ -31,4 +31,7 @@ urlpatterns = [
     path("experience-list/", include("experience.urls")),
     path("skill/", include("skill.urls")),
     path("skill-list/", include("skill.urls")),
+    path("skill/<int:pk>/", include("skill.urls")),
+    path("experiences/<int:pk>/", include("experience.urls")),
+    path("experiences/<int:pk>/", include("experience.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
