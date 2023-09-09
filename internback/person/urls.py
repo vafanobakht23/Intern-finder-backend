@@ -7,6 +7,7 @@ from .views import (
     PersonViewSet,
     PersonDetailAPIView,
     FileUploadView,
+    UserLogoutView,
 )
 
 router = DefaultRouter()
@@ -20,4 +21,5 @@ urlpatterns = [
     path("", include(router.urls)),
     path("user-detail/", PersonDetailAPIView.as_view(), name="user-detail"),
     path("upload/", FileUploadView.as_view(), name="file-upload"),
+    path("logout/", UserLogoutView.as_view(), name="logout"),
 ]

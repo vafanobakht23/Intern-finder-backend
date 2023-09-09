@@ -21,7 +21,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser
 from .serializers import FileUploadSerializer
 from rest_framework.parsers import FileUploadParser
-
+from django.contrib.auth import logout
+from django.views import View
+from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -57,6 +59,12 @@ class login(APIView):
             return Response({"response": "correct Password"})
         else:
             return Response("missing user", status=status.HTTP_404_NOT_FOUND)
+
+
+class UserLogoutView(View):
+    def get(self, request):
+        logout(request)
+        return JsonResponse({"message": "Logout successful"}, status=200)
 
 
 class FileUploadView(APIView):
