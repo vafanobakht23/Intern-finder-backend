@@ -77,7 +77,7 @@ class PostViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class UserExperienceViewSet(viewsets.ModelViewSet):
+class PostUserViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
 
     def get_queryset(self):

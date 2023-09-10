@@ -21,6 +21,6 @@ urlpatterns = [
     path(
         "experiences/",
         ExperienceViewSet.as_view({"delete": "delete"}),
-        name="experience-update",
+        name="experience-delete",
     ),
 ]
