@@ -19,7 +19,7 @@ urlpatterns = [
         name="post-delete",
     ),
     path(
-        "post-update/",
+        "post-update/<int:pk>/",
         PostViewSet.as_view({"patch": "update"}),
         name="post-update",
     ),
