@@ -65,14 +65,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-
-        # Ensure that only the owner of the experience can delete it
-        if instance.user != request.user:
-            return Response(
-                {"detail": "You do not have permission to perform this action."},
-                status=status.HTTP_403_FORBIDDEN,
-            )
-
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -81,10 +73,7 @@ class PostUserViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
 
     def get_queryset(self):
-        # Retrieve the user ID from the URL parameters
         user_id = self.request.data["user_id"]
-
-        # Filter experiences based on the user ID
         queryset = Post.objects.filter(user_id=user_id)
 
         return queryset

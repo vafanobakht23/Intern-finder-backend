@@ -13,4 +13,14 @@ urlpatterns = [
         PostUserViewSet.as_view({"post": "list"}),
         name="post-list",
     ),
+    path(
+        "post-delete/<int:pk>/",
+        PostViewSet.as_view({"delete": "destroy"}),
+        name="post-delete",
+    ),
+    path(
+        "post-update/",
+        PostViewSet.as_view({"patch": "update"}),
+        name="post-update",
+    ),
 ]
