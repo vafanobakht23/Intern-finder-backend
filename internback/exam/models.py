@@ -2,7 +2,7 @@ from django.db import models
 from post.models import Post
 
 
-class Post(models.Model):
+class Exam(models.Model):
     content = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
