@@ -1,10 +1,12 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from django.http import JsonResponse
 from .models import Exam
 from post.models import Post
 from .serializers import ExamSerializer
-
+import pdb
 from django.contrib.auth import get_user_model
+import json
 
 
 class ExamViewSet(viewsets.ModelViewSet):
@@ -18,21 +20,19 @@ class ExamViewSet(viewsets.ModelViewSet):
         # Check if the user with the given user_id exists
         try:
             post = Post.objects.get(pk=post_id)
-        except User.DoesNotExist:
+        except Post.DoesNotExist:
             return Response(
-                {"detail": "User with this user_id does not exist."},
+                {"detail": "Post with this post_id does not exist."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
-        # Add the user to the request data
-        modified_data = request.data.copy()
-        modified_data["post"] = post.id
-
-        serializer = self.get_serializer(data=modified_data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Deserialize the content array directly
+        content_data = request.data.get("content", [])
+        # Create an Exam object with the deserialized content
+        exam = Exam(post=post, content=content_data)
+        exam.save()
+        # Serialize the Exam object to respond with the saved content
+        serializer = self.get_serializer(exam)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop("partial", False)
@@ -59,7 +59,7 @@ class ExamViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return JsonResponse(serializer.data, safe=False)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
