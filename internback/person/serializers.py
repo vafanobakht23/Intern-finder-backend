@@ -5,7 +5,18 @@ from .models import Person
 class PersonSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Person
-        fields = "__all__"
+        fields = [
+            "firstname",
+            "lastname",
+            "username",
+            "role",
+            "biography",
+            "photo",
+            "title",
+            "university",
+            "address",
+            "created_at",
+        ]
 
 
 class PersonUpdateSerializer(serializers.ModelSerializer):
