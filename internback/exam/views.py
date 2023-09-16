@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, generics
 from rest_framework.response import Response
 from django.http import JsonResponse
 from .models import Exam
@@ -66,3 +66,8 @@ class ExamViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ExamListViewSet(generics.ListAPIView):
+    queryset = Exam.objects.all()
+    serializer_class = ExamSerializer

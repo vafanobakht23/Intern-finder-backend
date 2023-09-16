@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
-from .views import ExamViewSet
+from .views import ExamViewSet, ExamListViewSet
 
 router = DefaultRouter()
 router.register(r"create-exam", ExamViewSet, basename="create-exam")
@@ -10,7 +10,7 @@ urlpatterns = [
     path("", include(router.urls)),
     path(
         "exam-list/",
-        ExamViewSet.as_view({"post": "list"}),
+        ExamListViewSet.as_view(),
         name="exam-list",
     ),
     path(
