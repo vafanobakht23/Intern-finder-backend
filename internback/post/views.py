@@ -77,3 +77,8 @@ class PostUserViewSet(viewsets.ModelViewSet):
         queryset = Post.objects.filter(user_id=user_id)
 
         return queryset
+
+
+class AllPostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer

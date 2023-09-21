@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
-from .views import PostViewSet, PostUserViewSet
+from .views import PostViewSet, PostUserViewSet, AllPostViewSet
 
 router = DefaultRouter()
 router.register(r"create-post", PostViewSet, basename="create-post")
@@ -22,5 +22,10 @@ urlpatterns = [
         "post-update/<int:pk>/",
         PostViewSet.as_view({"patch": "update"}),
         name="post-update",
+    ),
+    path(
+        "all-post/",
+        AllPostViewSet.as_view({"get": "list"}),
+        name="all-post",
     ),
 ]
