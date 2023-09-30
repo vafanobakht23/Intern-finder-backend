@@ -1,16 +1,31 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
-from .views import EnrollmentViewSet
+from .views import (
+    EnrollmentViewSet,
+    EnrollmentPerUserViewSet,
+    CombinedEnrollmentListView,
+)
 
 router = DefaultRouter()
 router.register(r"create-enrollment", EnrollmentViewSet, basename="create-enrollment")
+# router.register(
+#     r"user-enrollment", EnrollmentPerUserViewSet, basename="user-enrollment"
+# )
+# router.register(r"user-enrollment", EnrollmentPerUserViewSet, basename="enrollment")
+router.register(r"user-enrollment", CombinedEnrollmentListView, basename="enrollment")
 
 urlpatterns = [
-    path("", include(router.urls)),
+    # path("user-enrollment", include(router.urls)),
     path(
         "create-enrollment",
         EnrollmentViewSet.as_view({"post": "create"}),
         name="create-enrollment",
     ),
+    # path(
+    #     "user-enrollment",
+    #     CombinedEnrollmentListView.as_view(),
+    #     name="user-enrollment",
+    # ),
+    path("", include(router.urls)),
 ]

@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from person.models import Person
 from post.models import Post
 from django.contrib.auth import get_user_model
+from rest_framework.views import APIView
 
 User = get_user_model()
 
@@ -50,3 +51,39 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
     def perform_destroy(self, instance):
         # Customize the delete behavior if necessary
         instance.delete()
+
+
+class EnrollmentListViewSet(viewsets.ModelViewSet):
+    queryset = Enrollment.objects.all()
+    serializer_class = EnrollmentSerializer
+
+
+class EnrollmentPerUserViewSet(viewsets.ViewSet):
+    def list(self, request):
+        user_id = request.query_params.get("user_id")
+        queryset = Enrollment.objects.filter(user=user_id)
+        serializer = EnrollmentSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class CombinedEnrollmentListView(viewsets.ViewSet):
+    def list(self, request):
+        try:
+            user_id = request.query_params.get("user_id")
+            # Perform a join query to retrieve enrollments and related posts for a specific user
+            combined_data = Enrollment.objects.filter(user=user_id).values(
+                "id",
+                "status",
+                "answers",
+                "user_id",
+                "post__id",
+                "post__title",
+                "post__category",
+                "post__description",
+                "post__created_at",
+            )
+
+            return Response(combined_data)
+
+        except Person.DoesNotExist:
+            return Response({"detail": "User not found"}, status=404)

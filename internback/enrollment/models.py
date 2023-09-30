@@ -4,7 +4,7 @@ from person.models import Person
 
 
 class Enrollment(models.Model):
-    status = models.CharField(max_length=2)
+    status = models.CharField(max_length=2, null=True)
     answers = models.TextField(null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(Person, on_delete=models.CASCADE, null=True)
