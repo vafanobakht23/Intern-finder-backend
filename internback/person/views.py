@@ -124,12 +124,29 @@ class PersonViewSet(viewsets.ModelViewSet):
         serializer.save()
 
 
-class PersonDetailAPIView(generics.RetrieveAPIView):
+class PersonDetailAPIView:
     queryset = User.objects.all()
     serializer_class = PersonSerializer
 
     def get_object(self):
         return self.request.user
+
+
+class PersonDetailViewSet(viewsets.ViewSet):
+    def retrieve(self, request):
+        user_id = request.query_params.get("user_id")
+        try:
+            # Retrieve a single user instance by ID
+            user_instance = User.objects.get(id=user_id)
+
+            # Serialize the user instance
+            serializer = PersonSerializer(user_instance)
+
+            return Response(serializer.data)
+        except User.DoesNotExist:
+            return Response(
+                {"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND
+            )
 
 
 @api_view(["GET"])

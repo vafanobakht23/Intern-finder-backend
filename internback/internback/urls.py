@@ -26,6 +26,7 @@ urlpatterns = [
     path("logout/", include("person.urls")),
     path("detail/", include("person.urls")),
     path("upload/", include("person.urls")),
+    path("user-detail/", include("person.urls")),
     path("update-biography/", include("person.urls")),
     path("user-detail/", include("person.urls")),
     path("experiences/", include("experience.urls")),
