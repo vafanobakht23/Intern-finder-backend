@@ -102,3 +102,26 @@ class CombinedEnrollmentListView(viewsets.ViewSet):
 
         except Person.DoesNotExist:
             return Response({"detail": "User not found"}, status=404)
+
+
+class CombinedEnrollmentPersonListView(viewsets.ViewSet):
+    def list(self, request):
+        try:
+            # user_id = request.query_params.get("user_id")
+            post_id = request.query_params.get("post_id")
+            is_post_founded = Q(post=post_id)
+            # is_user_founded = Q(
+            #     user=user_id
+            # )  # Perform a join query to retrieve enrollments and related posts for a specific user
+            combined_data = Enrollment.objects.filter(is_post_founded).values(
+                "id",
+                "status",
+                "answers",
+                "user_id",
+                "user__username",
+            )
+
+            return Response(combined_data)
+
+        except Person.DoesNotExist:
+            return Response({"detail": "User not found"}, status=404)

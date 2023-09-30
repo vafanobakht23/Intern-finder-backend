@@ -5,6 +5,7 @@ from .views import (
     EnrollmentViewSet,
     EnrollmentPerUserViewSet,
     CombinedEnrollmentListView,
+    CombinedEnrollmentPersonListView,
 )
 
 router = DefaultRouter()
@@ -14,6 +15,9 @@ router.register(r"create-enrollment", EnrollmentViewSet, basename="create-enroll
 # )
 # router.register(r"user-enrollment", EnrollmentPerUserViewSet, basename="enrollment")
 router.register(r"user-enrollment", CombinedEnrollmentListView, basename="enrollment")
+router.register(
+    r"post-user-enrollment", CombinedEnrollmentPersonListView, basename="enrollment"
+)
 
 urlpatterns = [
     # path("user-enrollment", include(router.urls)),
