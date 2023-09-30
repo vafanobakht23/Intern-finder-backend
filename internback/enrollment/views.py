@@ -8,6 +8,7 @@ from person.models import Person
 from post.models import Post
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
+from django.db.models import Q
 
 User = get_user_model()
 
@@ -33,6 +34,20 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
         except User.DoesNotExist:
             return Response(
                 {"detail": "User with this user_id does not exist."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        try:
+            is_post_founded = Q(post_id=post_id)
+            is_user_founded = Q(user_id=user_id)
+            founder_res = Enrollment.objects.filter(is_post_founded & is_user_founded)
+            if founder_res.exists():
+                return Response(
+                    {"detail": "You can't apply for this post"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        except Enrollment.DoesNotExist:
+            return Response(
+                {"detail": "You can't apply for this post."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         modified_data = request.data.copy()
