@@ -26,10 +26,10 @@ urlpatterns = [
         EnrollmentViewSet.as_view({"post": "create"}),
         name="create-enrollment",
     ),
-    # path(
-    #     "user-enrollment",
-    #     CombinedEnrollmentListView.as_view(),
-    #     name="user-enrollment",
-    # ),
+    path(
+        "update-enrollment/<int:pk>/",
+        EnrollmentViewSet.as_view({"patch": "update"}),
+        name="update-enrollment",
+    ),
     path("", include(router.urls)),
 ]
