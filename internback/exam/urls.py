@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
-from .views import ExamViewSet, ExamListViewSet
+from .views import ExamViewSet, ExamListViewSet, ExamRetriveViewSet
 
 router = DefaultRouter()
 router.register(r"exams", ExamViewSet, basename="exam")
@@ -18,6 +18,11 @@ urlpatterns = [
         "exam-list/",
         ExamListViewSet.as_view(),
         name="exam-list",
+    ),
+    path(
+        "exam-detail/",
+        ExamRetriveViewSet.as_view({"post": "list"}),
+        name="exam-detail",
     ),
     path(
         "exam-delete/<int:pk>/",

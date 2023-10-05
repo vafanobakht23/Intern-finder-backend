@@ -82,3 +82,12 @@ def create(self, request, *args, **kwargs):
 class ExamListViewSet(generics.ListAPIView):
     queryset = Exam.objects.all()
     serializer_class = ExamSerializer
+
+
+class ExamRetriveViewSet(viewsets.ModelViewSet):
+    serializer_class = ExamSerializer
+
+    def get_queryset(self):
+        post_id = self.request.data["post_id"]
+        queryset = Exam.objects.filter(post=post_id)
+        return queryset
