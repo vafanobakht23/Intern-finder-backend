@@ -6,6 +6,7 @@ from .views import (
     EnrollmentPerUserViewSet,
     CombinedEnrollmentListView,
     CombinedEnrollmentPersonListView,
+    EnrollmentRetriveViewSet,
 )
 
 router = DefaultRouter()
@@ -30,6 +31,11 @@ urlpatterns = [
         "update-enrollment/<int:pk>/",
         EnrollmentViewSet.as_view({"patch": "update"}),
         name="update-enrollment",
+    ),
+    path(
+        "enrollment-detail/",
+        EnrollmentRetriveViewSet.as_view({"post": "list"}),
+        name="enrollment-detail",
     ),
     path("", include(router.urls)),
 ]

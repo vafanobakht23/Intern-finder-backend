@@ -151,3 +151,12 @@ class CombinedEnrollmentPersonListView(viewsets.ViewSet):
 
         except Person.DoesNotExist:
             return Response({"detail": "User not found"}, status=404)
+
+
+class EnrollmentRetriveViewSet(viewsets.ModelViewSet):
+    serializer_class = EnrollmentSerializer
+
+    def get_queryset(self):
+        id = self.request.data["id"]
+        queryset = Enrollment.objects.filter(id=id)
+        return queryset
