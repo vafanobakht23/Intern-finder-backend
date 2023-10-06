@@ -65,6 +65,7 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
         post_id = request.data.get("post_id")
         user_id = request.data.get("user_id")
         status = request.data.get("status")
+        enrollment_id = request.data.get("enrollment_id")
         try:
             post = Post.objects.get(pk=post_id)
         except Post.DoesNotExist:
@@ -83,6 +84,7 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
         modified_data["user"] = user.id
         modified_data["post"] = post.id
         modified_data["status"] = status
+        modified_data["id"] = enrollment_id
         serializer = self.get_serializer(instance, data=modified_data, partial=partial)
         if serializer.is_valid():
             serializer.save()
