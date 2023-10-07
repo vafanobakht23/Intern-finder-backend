@@ -82,3 +82,15 @@ class PostUserViewSet(viewsets.ModelViewSet):
 class AllPostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+
+class SearchPostViewPost(viewsets.ModelViewSet):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        queryset = Post.objects.all()
+        search_query = self.request.query_params.get("search")
+        if search_query:
+            queryset = queryset.filter(title=search_query)
+
+        return queryset
