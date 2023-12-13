@@ -91,6 +91,6 @@ class SearchPostViewPost(viewsets.ModelViewSet):
         queryset = Post.objects.all()
         search_query = self.request.query_params.get("search")
         if search_query:
-            queryset = queryset.filter(title=search_query)
+            queryset = queryset.filter(title__icontains=search_query)
 
         return queryset
