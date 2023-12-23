@@ -1,7 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
-from .views import PostViewSet, PostUserViewSet, AllPostViewSet, SearchPostViewPost
+from .views import (
+    PostViewSet,
+    PostUserViewSet,
+    SeeMorePosts,
+    AllPostViewSet,
+    SearchPostViewPost,
+)
 
 router = DefaultRouter()
 router.register(r"create-post", PostViewSet, basename="create-post")
@@ -12,6 +18,11 @@ urlpatterns = [
         "post-list/",
         PostUserViewSet.as_view({"post": "list"}),
         name="post-list",
+    ),
+    path(
+        "more-posts/",
+        SeeMorePosts.as_view({"get": "list"}),
+        name="more-posts",
     ),
     path(
         "post-search/",
