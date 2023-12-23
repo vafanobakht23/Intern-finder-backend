@@ -80,8 +80,17 @@ class PostUserViewSet(viewsets.ModelViewSet):
 
 
 class AllPostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get("user_id")
+        user = User.objects.get(pk=user_id)
+        queryset = Post.objects.filter(category__icontains=user.title)
+        if queryset and user.role == "Intern":
+            return queryset
+        else:
+            queryset = Post.objects.all()
+        return queryset
 
 
 class SearchPostViewPost(viewsets.ModelViewSet):
