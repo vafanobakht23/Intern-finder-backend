@@ -12,6 +12,8 @@ class Person(AbstractBaseUser):
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
     username = models.EmailField(unique=True)
+    activation_code = models.CharField(max_length=10, null=True)
+    is_active = models.BooleanField(default=False)
     role = models.CharField(max_length=50)
     password = models.CharField(max_length=128, default="default_password")
     biography = models.CharField(max_length=200, null=True)
@@ -19,11 +21,6 @@ class Person(AbstractBaseUser):
     title = models.CharField(max_length=200, null=True)
     university = models.CharField(max_length=200, null=True)
     address = models.CharField(max_length=200, null=True)
-    invitation_token = models.CharField(
-        max_length=255, blank=True, null=True, unique=True
-    )
-    invitation_expires_at = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     USERNAME_FIELD = "username"
 

@@ -17,6 +17,7 @@ class PersonSerializer(serializers.ModelSerializer):
             "university",
             "address",
             "created_at",
+            "activation_code",
         ]
 
 

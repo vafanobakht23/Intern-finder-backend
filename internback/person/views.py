@@ -5,6 +5,9 @@ from rest_framework.decorators import (
     permission_classes,
 )
 import os
+import random
+from django.core.mail import send_mail
+from django.conf import settings
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -36,10 +39,38 @@ def signup(request):
         serializer.save()
         user = User.objects.get(username=request.data["username"])
         user.set_password(request.data["password"])
-        user.save()
         token = Token.objects.create(user=user)
-        return Response({"token": token.key, "user": serializer.data})
+        subject = "Thank you for registering to our site"
+        random_number = random.randint(10000, 99999)
+        message = str(random_number)
+        email_from = settings.EMAIL_HOST_USER
+        recived_data = user.username
+        recipient_list = [recived_data]
+        send_mail(subject, message, email_from, recipient_list)
+
+        # Save the user and then set the activation_code
+        user.save()
+        user.activation_code = str(random_number)
+        user.save()
+        return Response(
+            {
+                "token": token.key,
+                "user": serializer.data,
+            }
+        )
     return Response(serializer.errors, status=status.HTTP_200_OK)
+
+
+class activateAcc(APIView):
+    def post(self, request):
+        user = User.objects.get(username=request.data["username"])
+        code = request.data["code"]
+        if str(code) == str(user.activation_code):
+            user.is_active = True
+            user.save()
+            return Response("Succefull")
+
+        return Response("Error")
 
 
 class login(APIView):
@@ -53,10 +84,15 @@ class login(APIView):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            token, created = Token.objects.get_or_create(user=user)
-            serializer = PersonSerializer(user)
-            return Response({"token": token.key, "user": serializer.data})
-            return Response({"response": "correct Password"})
+            if user.is_active:
+                token, created = Token.objects.get_or_create(user=user)
+                serializer = PersonSerializer(user)
+                return Response({"token": token.key, "user": serializer.data})
+                return Response({"response": "correct Password"})
+            else:
+                return Response(
+                    "User is not active", status=status.HTTP_400_BAD_REQUEST
+                )
         else:
             return Response("missing user", status=status.HTTP_404_NOT_FOUND)
 

@@ -9,6 +9,7 @@ from .views import (
     FileUploadView,
     UserLogoutView,
     PersonDetailViewSet,
+    activateAcc,
 )
 
 router = DefaultRouter()
@@ -17,6 +18,7 @@ router.register(r"update-biography", PersonViewSet, basename="update-biography")
 
 urlpatterns = [
     path("", views.signup, name="register"),
+    path("activate/", activateAcc.as_view(), name="activate"),
     path("login/", login.as_view(), name="login"),
     path("token", views.test_token, name="token"),
     path("detail", UserViewSet.as_view({"get": "retrieve"})),
