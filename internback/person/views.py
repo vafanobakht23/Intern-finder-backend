@@ -70,7 +70,7 @@ class activateAcc(APIView):
             user.save()
             return Response("Succefull")
 
-        return Response("Error")
+        return Response({"msg": "Error"})
 
 
 class login(APIView):
