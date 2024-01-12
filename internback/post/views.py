@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .models import Post
 from .serializers import PostSerializer
-
+from django.db.models import Q
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -85,9 +85,8 @@ class AllPostViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user_id = self.request.query_params.get("user_id")
         user = User.objects.get(pk=user_id)
-        queryset = Post.objects.filter(category__icontains=user.title)
-        if queryset and user.role == "Intern":
-            return queryset
+        if user.role == "Intern":
+            queryset = Post.objects.filter(category__icontains=user.title)
         else:
             queryset = Post.objects.all()
         return queryset
@@ -99,7 +98,7 @@ class SeeMorePosts(viewsets.ModelViewSet):
     def get_queryset(self):
         user_id = self.request.query_params.get("user_id")
         user = User.objects.get(pk=user_id)
-        queryset = Post.objects.exclude(category=user.title)
+        queryset = Post.objects.exclude(category__icontains=user.title)
         return queryset
 
 
